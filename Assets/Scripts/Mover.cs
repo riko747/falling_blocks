@@ -4,31 +4,30 @@ using UnityEngine;
 
 public class Mover : MonoBehaviour
 {
-    Vector3 moveLeft, moveRight;
+    
+    //Player movement speed
+    float speed;
 
-    float x;
+    //Half screen detection
+    double halfScreen;
+
     void Start()
     {
-        x = 5 * Time.deltaTime;
-        moveLeft = new Vector3(-x, 0, 0);
-        moveRight = new Vector3(x, 0, 0);
+        speed = 5 * Time.deltaTime;
+        halfScreen = Screen.width / 2;
     }
-    // Update is called once per frame
-    void Update()
+
+    void FixedUpdate()
     {
-        if (Input.touchCount > 0) //&& Input.GetTouch(0).phase == TouchPhase.Ended)
+        if (Input.touchCount > 0)
         {
             Vector2 touchPosition = Input.GetTouch(0).position;
-            double halfScreen = Screen.width / 2.0;
-
+            //If player touches left edge of screen, player moves left
             if (touchPosition.x < halfScreen)
-            {
-                transform.Translate(Vector3.left * 5f * Time.deltaTime);
-            }
+                transform.Translate(Vector3.left * speed);
+            //If player touches right edge of screen, player moves right
             else if (touchPosition.x > halfScreen)
-            {
-                transform.Translate(Vector3.right * 5f * Time.deltaTime);
-            }
+                transform.Translate(Vector3.right * speed);
         }
     }
 }
