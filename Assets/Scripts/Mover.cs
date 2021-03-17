@@ -13,7 +13,7 @@ public class Mover : MonoBehaviour
 
     void Start()
     {
-        speed = 5 * Time.deltaTime;
+        speed = 5;
         halfScreen = Screen.width / 2;
     }
 
@@ -24,10 +24,10 @@ public class Mover : MonoBehaviour
             Vector2 touchPosition = Input.GetTouch(0).position;
             //If player touches left edge of screen, player moves left
             if (touchPosition.x < halfScreen)
-                transform.Translate(Vector3.left * speed);
+                transform.Translate(Vector3.left * speed * Time.deltaTime);
             //If player touches right edge of screen, player moves right
             else if (touchPosition.x > halfScreen)
-                transform.Translate(Vector3.right * speed);
+                transform.Translate(Vector3.right * speed * Time.deltaTime);
         }
     }
 }
