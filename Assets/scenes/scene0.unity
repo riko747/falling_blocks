@@ -1166,12 +1166,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2493236650242711624, guid: d02cec811e0092f4896586cf65697443,
         type: 3}
-      propertyPath: menu
+      propertyPath: menuUI
       value: 
       objectReference: {fileID: 1272498036}
     - target: {fileID: 2493236650242711624, guid: d02cec811e0092f4896586cf65697443,
         type: 3}
-      propertyPath: circle
+      propertyPath: player
       value: 
       objectReference: {fileID: 1955007512}
     m_RemovedComponents: []
@@ -1684,16 +1684,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 3744954828847547337, guid: 4bc4caf518ad44a4c8c728fec47c8a72,
-        type: 3}
-      propertyPath: m_CastShadows
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3744954828847547337, guid: 4bc4caf518ad44a4c8c728fec47c8a72,
-        type: 3}
-      propertyPath: m_ReceiveShadows
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 3744954828847547339, guid: 4bc4caf518ad44a4c8c728fec47c8a72,
         type: 3}
       propertyPath: m_Name

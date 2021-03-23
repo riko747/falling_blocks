@@ -3,22 +3,17 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+/// <summary>
+/// Restarting level and exiting application logic
+/// </summary>
 public class GameOverScreen : MonoBehaviour
 {
-    Dropper dropper;
-
-    void Start()
-    {
-        //Referencing to Dropper script for managing player death
-        dropper = GameObject.FindWithTag("Enemy").GetComponent<Dropper>();
-    }
-
     //When "Restart Button" clicks - game restarts
     public void RestartGame()
     {
         SceneManager.LoadScene("scene0");
         Time.timeScale = 1;
-        Dropper.FallSpeed = -1f;
+        Dropper.ObstaclesForceSpeedY = -1f;
         Dropper.FallingInvokeTime = 1f;
     }
 

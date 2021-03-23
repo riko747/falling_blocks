@@ -2,22 +2,46 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Block movement logic
+/// </summary>
 public class Dropper : MonoBehaviour
 {
     #region Fields
-    
+    Vector3 blockSpawnPosition;
+
     Rigidbody rigidBody;
 
     //Serializing player prefab and UI
     [SerializeField] GameObject player;
-    [SerializeField] GameObject menu;
+    [SerializeField] GameObject menuUI;
+
+
+    //Time after which cubes will accelerate
+    private const int accelerationPeriod = 5;
+    //Time after which method "AccelerationPreparation" will be invoked
+    private const float accelerationInvokeTime = 1f;
+
 
     //Time support
     private static int seconds = 0;
     //Speed of spawning cubes
     private static float fallingInvokeTime = 1f;
+
     //Speed of falling cubes
-    private static float fallSpeed = -1f;
+    private const float obstaclesForceSpeedX = 0f;
+    private static float obstaclesForceSpeedY = -1f;
+    private const float obstaclesForceSpeedZ = 0f;
+
+    //Block spawn boundaries
+    private const float leftEdgeOfScreen = -5.5f;
+    private const float rightEdgeOfScreen = 5.5f;
+    private const float topOfScreen = 9f;
+    private const float playerPositionOnZ = -3.5f;
+
+    //Block movement acceleration support
+    private static float increaseBlockFallingSpeed = -0.5f;
+    private static float reduceSpawnTime = -0.05f;
     #endregion
 
     #region Properties
@@ -34,27 +58,86 @@ public class Dropper : MonoBehaviour
         set { fallingInvokeTime = value; }
     }
 
-    public static float FallSpeed
+    public float ObstaclesForceSpeedX
     {
-        get { return fallSpeed; }
-        set { fallSpeed = value; }
+        get { return obstaclesForceSpeedX; }
     }
 
+    public static float ObstaclesForceSpeedY
+    {
+        get { return obstaclesForceSpeedY; }
+        set { obstaclesForceSpeedY = value; }
+    }
+
+    public float ObstaclesForceSpeedZ
+    {
+        get { return obstaclesForceSpeedZ; }
+    }
+
+    public static float IncreaseBlockFallingSpeed
+    {
+        get { return increaseBlockFallingSpeed; }
+        set { increaseBlockFallingSpeed = value; }
+    }
+
+    public static float ReduceSpawnTime
+    {
+        get { return reduceSpawnTime; }
+        set { reduceSpawnTime = value; }
+    }
+
+    public int AccelerationPeriod
+    {
+        get { return accelerationPeriod; }
+    }
+
+    public float AccelerationInvokeTime
+    {
+        get { return accelerationInvokeTime; }
+    }
+
+    public float LeftEdgeOfScreen
+    {
+        get { return leftEdgeOfScreen; }
+    }
+
+    public float RightEdgeOfScreen
+    {
+        get { return rightEdgeOfScreen; }
+    }
+
+    public float TopOfScreen
+    {
+        get { return topOfScreen; }
+    }
+
+    public float PlayerPositionOnZ
+    {
+        get { return playerPositionOnZ; }
+    }
     #endregion
 
     #region Methods
     void Start()
     {
-        //Initial Force
         rigidBody = GetComponent<Rigidbody>();
-        rigidBody.AddForce(0, fallSpeed, 0, ForceMode.Impulse);
+        blockSpawnPosition = new Vector3(Random.Range(LeftEdgeOfScreen, RightEdgeOfScreen), TopOfScreen, PlayerPositionOnZ);
 
-        Invoke("AccelerationSupport", 1f);
-        Invoke("SpawningCube", fallingInvokeTime);
+        PushObstacleOnStart();
+        InvokeBlockStateMethods();
     }
 
-    //Block will be destroyed when it touches the ground
-    //If block touches player - player will be destroyed
+    void InvokeBlockStateMethods()
+    {
+        Invoke("AccelerationPreparation", AccelerationInvokeTime);
+        Invoke("SpawnCube", FallingInvokeTime);
+    }
+
+    void PushObstacleOnStart()
+    {
+        rigidBody.AddForce(ObstaclesForceSpeedX, ObstaclesForceSpeedY, ObstaclesForceSpeedZ, ForceMode.Impulse);
+    }
+
     void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.tag == "Ground")
@@ -63,35 +146,32 @@ public class Dropper : MonoBehaviour
             ShowGameOverScreen();
     }
 
-    //Gameover UI appears when player died
     void ShowGameOverScreen()
     {
         Time.timeScale = 0;
         Destroy(player);
-        menu.SetActive(true);
+        menuUI.SetActive(true);
     }
 
-    void AccelerationSupport()
+    void AccelerationPreparation()
     {
-        if (seconds == 5)
-            Speedup();
-        seconds++;
+        if (Seconds == AccelerationPeriod)
+            SpeedUpCube();
+        Seconds++;
         
     }
 
-    //When 5 seconds elapses speed of cubes increases
-    static void Speedup()
+    
+    static void SpeedUpCube()
     {
-        fallSpeed += -0.5f;
-        fallingInvokeTime -= 0.05f;
-        seconds = 0;
+        ObstaclesForceSpeedY += IncreaseBlockFallingSpeed;
+        FallingInvokeTime += ReduceSpawnTime;
+        Seconds = 0;
     }
 
-    //Spawning new cube at random position on top of the screen
-    void SpawningCube()
+    void SpawnCube()
     {
-        Vector3 spawnPosition = new Vector3(Random.Range(-5.5f, 5.5f), 9f, -3.5f);
-        Instantiate(gameObject, spawnPosition, Quaternion.identity);
+        Instantiate(gameObject, blockSpawnPosition, Quaternion.identity);
     }
     #endregion
 }
