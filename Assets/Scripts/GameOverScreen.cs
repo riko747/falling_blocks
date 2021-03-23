@@ -13,8 +13,8 @@ public class GameOverScreen : MonoBehaviour
     {
         SceneManager.LoadScene("scene0");
         Time.timeScale = 1;
-        Dropper.ObstaclesForceSpeedY = -1f;
-        Dropper.FallingInvokeTime = 1f;
+        BlockDropper.ObstaclesForceSpeedY = -1f;
+        BlockDropper.FallingInvokeTime = 1f;
     }
 
     //When "Quit Button" clicks - application closes

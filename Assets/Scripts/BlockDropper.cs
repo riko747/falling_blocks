@@ -5,7 +5,7 @@ using UnityEngine;
 /// <summary>
 /// Block movement logic
 /// </summary>
-public class Dropper : MonoBehaviour
+public class BlockDropper : MonoBehaviour
 {
     #region Fields
     Vector3 blockSpawnPosition;

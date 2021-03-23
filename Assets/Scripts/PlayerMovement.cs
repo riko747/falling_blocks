@@ -5,13 +5,13 @@ using UnityEngine;
 /// <summary>
 /// Player movement logic
 /// </summary>
-public class Mover : MonoBehaviour
+public class PlayerMovement : MonoBehaviour
 {
     #region Fields
     Vector2 screenTouchPosition;
 
     //Player movement speed
-    private const float playerMovementSpeed = 5;
+    private const float playerMovementSpeed = 5f;
 
     //Screen touching detection
     private bool playerTouchesScreen;
@@ -49,6 +49,11 @@ public class Mover : MonoBehaviour
         get { return playerTouchesRightEdgeOfScreen; }
         set { playerTouchesRightEdgeOfScreen = value; }
     }
+
+    public float PlayerMovementSpeed
+    {
+        get { return playerMovementSpeed; }
+    }
     #endregion
 
     #region Methods
@@ -68,8 +73,8 @@ public class Mover : MonoBehaviour
     void CheckTouchPosition()
     {
         ScreenTouchPosition = Input.GetTouch(0).position;
-        PlayerTouchesLeftEdgeOfScreen = screenTouchPosition.x < HalfScreen;
-        PlayerTouchesRightEdgeOfScreen = screenTouchPosition.x > HalfScreen;
+        PlayerTouchesLeftEdgeOfScreen = ScreenTouchPosition.x < HalfScreen;
+        PlayerTouchesRightEdgeOfScreen = ScreenTouchPosition.x > HalfScreen;
 
         if (PlayerTouchesLeftEdgeOfScreen)
             MoveLeft();
@@ -79,12 +84,12 @@ public class Mover : MonoBehaviour
 
     void MoveLeft()
     {
-        transform.Translate(Vector3.left * playerMovementSpeed * Time.deltaTime);
+        transform.Translate(Vector3.left * PlayerMovementSpeed * Time.deltaTime);
     }
 
     void MoveRight()
     {
-        transform.Translate(Vector3.right * playerMovementSpeed * Time.deltaTime);
+        transform.Translate(Vector3.right * PlayerMovementSpeed * Time.deltaTime);
     }
     #endregion
 }
